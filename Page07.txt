@@ -302,36 +302,3 @@
 			https://blog.csdn.net/wangwjtt/article/details/84786759
 		
 	7、重新部署.war包后无法访问
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-	[root@hecs-x-medium-2-linux-20210426110142 bin]# ./mysqld --initialize --user=mysql --datadir=/usr/local/mysql-8.0.23/data --basedir=/usr/local/mysql-8.0.23/
-2021-04-26T09:22:25.130581Z 0 [System] [MY-013169] [Server] /usr/local/mysql-8.0.23/bin/mysqld (mysqld 8.0.23) initializing of server in progress as process 19283
-2021-04-26T09:22:25.152607Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
-2021-04-26T09:22:26.799973Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
-2021-04-26T09:22:29.215893Z 6 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: 9%-Y#LYd,M/b
-
-	
-	124.70.181.138
-	
-	
-
-
-<Context docBase="D:\Tomcat9\webapps\CRMProject" path="/CRMProject" reloadable="true" source="org.eclipse.jst.jee.server:CRMProject"/>
-
-
-
-<Context docBase="D:\Tomcat9\webapps\CRMProject" path="/CRMProject" reloadable="true" source="org.eclipse.jst.jee.server:CRMProject"/>
-	<Context docBase="D:\Tomcat9\webapps\Test02" path="/Test02" reloadable="true" source="org.eclipse.jst.jee.server:Test02"/>
-
-108
