@@ -1,0 +1,100 @@
+###Page2
+1、文件权限、用户、用户组
+	1)whoami : 查看当前登录的用户
+	2)修改文件权限
+		<1>文字设定法 ：chmod [who] [ + | - | = ] [mode]
+			who : 
+					文件所有者 ：u
+					文件所属组 ：g
+					其他人     ：o
+					所有人     ：a
+					所有人	   ：不写默认
+					
+			+	:	添加权限
+			-	:	减少权限
+			=   :	覆盖原来的权限
+			
+			mode:
+				- : 没有权限
+				r ：读
+				w : 写
+				x ：执行
+				
+			chmod o+w aa : 给其他人增加对aa写的权限
+		<2>数字设定法
+			- ：没有权限
+			r : 4
+			w : 2
+			x : 1
+		
+			1 -- x
+			3 -- wx
+			5 -- rx
+			6 -- rw
+			7 -- rwx
+			
+			
+			chmod 777 aa ：将文件aa权限设置为rwxrwxrwx
+			chmod -001 aa : 将aa权限减--------x
+			
+	3)修改文件的所有者和所属组
+		可以避免使用chmod，切换所有者和所属组获得合格权限
+		chown paa:pbb cc : 将cc的所属者变为aa，所属组变为bb
+		chown pbb cc ：将cc的所属者变为bb
+		chown :pbb cc ：将cc的所属组变为bb
+		sudo chown bb cc ：如果使用chown bb cc显示没有权限，则可借用root用户权限
+		chgrp aa bb : 将aa的所属组改为bb
+		
+		目录有执行权限-x才能进入
+		
+2、文件的查找
+	1)按文件属性查找
+		<1>文件名 ：语法 -- find + 查找目录 + -name + "文件的名字"
+					带通配符 ： * -- 通配一个或多个字符 
+								？ -- 通配一个字符
+								[] -- 通配多个选定的字符 [abw]*[n-q] : 匹配任何以abw开头，n到e之间任何一个字母结尾的文件名
+								
+						语法 -- find + 查找到目录 + -name + "文？的*"
+				find ./ -name "bb"
+				
+		<2>文件大小 ：find + 查找目录 + -size + +10k
+					+10k : 大于10K
+					-10k ：小于10K
+					+10M : 大于10M
+					...
+				find ./ -size +10M : 大于10M的文件	
+				find ./ -size +10M -size -100M ：大于10M小于100M的文件
+		<3>文件类型 ：find + 查找目录 + -type + d/f/b/c/s/p/l
+				find ./ -type f
+				
+	2)按文件内容查找
+		grep -r "查找的内容" + 查找的路径
+		grep -r "contend" ./distance
+
+3、软件安装 -- (使用方法暂时未知) 
+	install aa: 下载
+	remove aa: 移除
+	update : 更新软件列表(软件的名字和下载地址)，从官方
+	clean : 清理所有软件安装包/var/cache/apt/archives 
+	
+	dpkg -i xxx.deb : 下载安装包
+	dpkg -r xxx : 卸载安装包
+	
+	源码安装 : 一般会有说明文档
+			步骤：	1、解压缩源代码包
+					2、进入到安装目录 ：cd dir
+					3、检测文件是否缺失，创建Makefile，检测编译环境：./configure
+					4、编译源码，生成库和可执行程序 ：make
+					5、把库和可执行程序，安装到系统目录下 ：make install
+					6、删除和卸载软件 : make distclean
+					7、上述安装步骤并不是绝对的，应该先查看附带的README文件
+					
+					
+	
+	
+	
+	
+	
+	
+	
+###End of Page2

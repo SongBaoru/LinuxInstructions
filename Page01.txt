@@ -1,0 +1,201 @@
+###Page1
+date : 显示当前日期
+1、命令解析器
+	shell -- Unix操作系统
+	bash -- Linux操作系统
+	命令解析器的本质：根据命令的名字，调用执行程序
+	
+2、Linux快捷键
+	history:用户之前敲过的命令
+	Ctrl + P : 上寻命令
+	Ctrl + N : 下寻命令
+	
+	Ctrl + B : 光标左移
+	Ctrl + F ：光标右移
+	Ctrl + A ：光标移到行首
+	Ctrl + E ：光标移到行尾
+	
+	Ctrl + H : 删除光标前的字符
+	Ctrl + D ：删除光标处的字符
+	Ctrl + U ：删除整行字符
+	Ctrl + L ：清屏
+	
+	
+	tab -- 自动填充命令，如果忘记命令行名称，可以在输入部分字符后按tab提示
+	
+3、Linux系统目录结构--树结构
+	cd -- 目录间切换
+	ls / -- 根目录的起始位置，查看根目录，会列出根目录下面的子目录
+		/bin -- 常用的shell命令的执行程序，如输入cd /bin，可以进入bin目录
+			ls -- 查看当前目录下的文件，在bin目录下输入ls，可以查看bin目录下的文件，里面有是命令的执行程序，体现了命令解析器的本质在bin目录下输入ls，可以查看bin目录下的文件，里面有是命令的执行程序，体现了命令解析器的本质
+		/boot -- 存放的是开机启动项文件
+		/dev -- Device(设备的缩写)，该目录存放的是Linux的外部设备
+		/etc -- 存放系统管理所需的配置文件
+		/home -- Linux里面的普通用户，没有root用户
+		/lib -- Linux系统下的动态链接库，动态库，相当于windows下的dll
+		/lost + found -- 系统非法关机存储文件的位置
+		/media -- 挂载目录，Linux会自动识别一些设备，如U盘、光驱等，当识别后，Linux会把识别的设备挂载到这个目录下
+		/mnt -- 挂载目录，手动挂载设备的位置，区别于自动挂载
+		/opt -- 第三方软件
+		/root -- 系统管理员，超级权限用户
+		/tmp -- 存放临时文件
+		/usr -- 用户软件资源目录，用户的很多程序和文件都放在这个目录下，类似于Windows下的Program files目录
+			/usr/bin -- 系统用户使用的应用程序
+		/var -- 各种日志文件
+		
+		
+4、用户路径
+	1）相对路径	-- ./bb 相对于当前的工作目录
+	2）绝对路径 -- 从根目录开始写，如/home/itcast/aa
+		. -- 当前目录
+		.. -- 当前的上一级目录
+		- -- 在邻近的两个目录间切换 cd - 
+		
+	命令提示符：
+		[root@iZ2zechop4knuo9tte7iyfZ ~]# 
+			root : 当前登录的用户
+			@ ：at 在
+			iZ2zechop4knuo9tte7iyfZ : 主机名
+			~ ： 用户的家目录（宿主目录）
+				cd ~ ：进入家目录
+			# : 当前用户为超级用户 root
+			$ : 当前用户为普通用户
+				sudo su -- 要切换到root用户，可以输入  然后输密码
+				exit -- 切换到root用户后，若要退出root用户，输入 exit
+				pwd -- 查看当前用户目录
+			
+			How to Add User to Sudoers in CentOS :
+				To add the user to the group , run the command below as root or another sudo user. 
+				Change “username” with the name of the user that you want to grant permissions to.
+					# usermod -aG wheel username
+					
+
+5、文件和目录的操作
+	1）查看目录
+		tree -- 查看，不同颜色对应不同文件属性，tree后不加为当前目录，或tree后指定被查看的目录
+			白色 -- 普通文件
+			蓝色 -- 目录
+			绿色 -- 可执行文件
+			红色 -- 压缩文件
+			青色 -- 链接文件，相当于Windows下的快捷方式
+			黄色 -- 设备文件
+			灰色 -- 其他文件
+		ls -- 列出文件和目录，但是不是看到所有的
+			ls -a -- 列出所有文件和目录
+				.aa -- 文件前有.说明该文件是隐藏的文件或目录
+			ls -l -- 文件或目录的详细信息
+			ls -la 或 ls -al -- 列出所有文件的详细信息
+				[文件类型-dlbcsp|所有者|同组用户|其他人rwx-]|[文件的硬链接数]|[文件或目录的所有者]|[该文件或目录所属的组]|[占用的存储空间]|[文件最后创建或修改的时间]|[文件名]
+					文件类型：
+						- : 普通文件
+						d : 目录
+						l : 链接符号，青色，并且会指示出链接到了哪里
+						b : 设备块
+						c : 字符设备
+						s : socket文件，套接字文件
+						p ：管道
+					操作许可：
+						r ：read
+						w : write
+						x : 执行
+					占用的存储空间：
+						在Linux下目录占用的空间为目录的大小，而不是目录中全部文件的大小，比如d文件占用大小为4096，这点跟Windows系统不同
+	2)在目录间切换
+		如
+		cd bin/
+		cd usr/
+		cd . ：仍在当前目录
+		cd .. : 进入上一级目录
+		cd - ：在叶子目录切换
+	  返回家目录方式
+		cd /home/username
+		cd ~
+		cd
+	  查看当前路径，当前目录位置
+		pwd
+	3)创建目录
+		mkdir dirName ：小(单个目录)
+		mkdir dir1/dir2/dir3 -p ：大(目录套目录)，注意后面需要加-p
+		mkdir -p dir1/dir2/dir3 ：同mkdir dir1/dir2/dir3 -p
+		
+		mkfifo aa : 创建管道文件aa，p类型文件
+	4)删除目录
+		rm aa -rf : 删除，删除后不进入回收站，直接删除，恢复较复杂
+		rm aa -r : 递归删除文件夹
+			= rm -r bb
+		rmdir aa ：删除空目录
+	9)拷贝目录
+		cp aa bb -r : 如果bb不存在则创建一个，然后将aa拷贝到bb中；如果存在则将aa拷贝为bb的一个子目录
+		
+		cp ./aa/* bb -r : 将aa中的文件及目录拷贝到bb中，区别于cp ./aa bb -r ：将aa拷贝到bb中
+			./aa/* : aa里面的全部文件及目录
+	5)创建文件
+		touch : touch aa如果文件不存在则创建文件，如果存在则修改文件的时间
+	6)删除文件
+		rm aa ：删除文件
+	7)拷贝文件
+		cp aa bb : 如果bb不存在则创建一个，然后将aa拷贝到bb中；如果存在则覆盖，不同于拷贝目录
+	10)查看文件
+		cat aa ：查看文件内容，全部显示
+		more aa : 显示部分，回车每次增加显示一行，空格翻页，只能往后翻
+			按q或Ctrl+C退出
+		less aa ：显示部分，回车每次增加显示一行，空格翻页，往前翻Ctrl+P，往后翻Ctrl+N行，向前翻页Ctrl+B，向后翻页Ctrl+F
+			按q或Ctrl+C退出
+		head aa ：显示文件前十行
+			head -5 aa : 显示文件前五行
+		tail aa : 显示文件后十行
+			tail -5 aa ：显示文件后五行
+		vi a
+		
+	11)更改文件名字
+		mv : 既可以给文件改名，又可以移动文件 
+			若bb不存在，cc目录存在
+				mv aa bb -- 把aa改名bb
+				mv aa cc -- 把aa移到cc里面
+	12)给文件或者目录创建快捷方式(软链接) -- 通过inode找到对应文件
+		Linux文件系统的存储单位是块，inode -- i结点，保存了一些文件信息，通过inode找到对应的文件
+		ln : 创建链接
+			ln -s bb bb_1ink : 用相对路径，在同一级目录下创建软链接，给aa创建链接bb
+			ln -s /home/aa/bb bb_1ink : 用绝对路径，创建软链接，给aa创建软链接bb
+				= ln -s ../aa/bb bb_1ink
+				mv bb_1ink ../ ：将软链接bb移到上一级目录../，只有使用绝对路径创建的软链接，才可以在这样移动之后能够使用
+	13)给文件创建备份(硬链接) -- 建立映射(只有文件才可以创建硬链接)
+		ln bb bb_1ink : 对bb建立硬链接bb_link，不占用磁盘空间，不等于拷贝，只是建立了映射
+			bb 和 bb_1ink 都对同一个i结点建立了映射，用到了同一个i结点，但是bb和bb_link之间没有了关系
+			创建之后会使bb的硬链接计数加一，删除bb_link删除，链接计数减一，链接数如果变为0，则磁盘释放，可以被重新
+			硬链接不需要指定绝对路径，一旦建立之后，不管被移动到什么位置，都能够找到磁盘
+			
+	给aa目录下的hello.c创建一个软链接hello.soft，删除hello.c文件之后，软链接hello.soft不能使用
+	给aa目录下的hello.c创建一个硬链接hello.hard，删除hello.c文件之后，软链接hello.hard可以使用
+
+	14)其他查看操作
+		<1>文本文件 -- 获取文本文件的行数、单词数、字节数
+			wc filenname: [文件行数|文件单词数(以空格区分)|字节数]|[文件名]
+		<2>二进制文件
+			od -tc aa ：以ASIC查看二进制文件aa的内容
+				-t指定数据显示的个数(cdfoux ：ASIC字符、有符号十进制数、浮点数、八进制数、无符号十进制数、十六进制数)
+		<3>目录大小
+			du : 查看目录大小
+			du -h ：以人类能够看懂的方式，查看目录大小
+		<4>磁盘使用情况
+			df : 磁盘使用情况
+			df -h : 以人类能够看懂的方式，磁盘使用情况
+		<5>查看外键的命令文件路径
+			which 指令名 : which ls -- 查看ls命令所在的文件目录
+###End of Page1			
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

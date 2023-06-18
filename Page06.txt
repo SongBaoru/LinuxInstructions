@@ -1,0 +1,199 @@
+##########Page06
+1、Linux部分命令
+	1)grep -- 全面搜索正则表达式并把行打印出来
+		使用 grep --help 可以查看详细的用法
+		示例 ：
+			<1>grep java aaa.txt
+				从aaa.txt中查找匹配java的行并打印
+			
+			<2>grep -i java aaa.txt
+				在匹配时不区分大小写
+				
+			<3>grep "abc java" aaa.txt
+				如果被匹配的字符中有空格需要用引号括起来
+				
+			<4>grep -w java ccc.txt 
+				匹配单个单词 java ，不匹配aaajava
+				
+			<5>grep "^java" aaa.txt 	
+				使用正则，以java开头
+			
+			<6>grep java aaa.txt bbb.txt 
+				从aaa.txt和bbb.txt中搜索java
+		
+			<7>cat aaa.txt | grep java
+				使用管道"|"，输出结果等同于grep java aaa.txt
+
+	2)date
+		展现当前的系统时间，在任何文件夹下都可以使用
+
+	3)su
+		切换用户
+		
+		su userName 
+			从超级管理员切换到普通用户不需要输入密码，反之需要
+			普通用户的命令输入行前的标识符是$，超级用户是#
+			
+	4)tar -- 压缩、解压文件
+		语法 ：
+			tar 参数 要压缩的或解压的文件或目录
+			
+		tar压缩文件和目录的语法相同
+		
+		常用参数 ：
+			z : 通过 gzip 过滤归档，使用压缩，生成的文件名是xxx.tar.gz，tar.gz是linux中常用的压缩格式
+			c : 创建压缩文档
+			x : 解压
+			v : 显示压缩、解压过程中处理的文件名
+			f : 指定归档文件名，tar参数后面是归档文件名
+			t : 列出归档文件内容，查看文件内容
+			C ：C是大写，解压到指定目录，使用方式 ：-C目录
+		
+		示例1(压缩文件) ：
+			<1>tar -zcvf aa.tar.gz bb.txt
+				aa ：归档(压缩)文件名
+				bb : 要归档文件列表(被归档的文件列表 -- 可以有多个被归档文件，空格隔开)
+			
+			<2>tar -zcvf aa.tar.gz aa.txt bb.txt
+
+			<3>tar -zcvf a.tar.gz *.txt
+				可以使用通配符 * 标识要压缩的文件名的一部分
+		
+		示例2(查看归档文件的内容) :
+			tar -tf a.tar.gz
+		
+		示例3(解压文件) :
+			<1>tar -zxvf a.tar.gz
+				解压到当前的文件夹下
+				
+			<2>tar -zxvf jdk-16.0.1_linux-x64_bin.tar.gz -C /user/local
+				-C后指定解压到的目录位置
+				
+2、系统控制命令
+	1)clear -- 清屏 -- XShell快捷键为Ctrl + L
+		
+	2)reboot -- 重启系统
+	
+	3)shutdown -h now -- 现在关机
+	
+	4)ps -ef -- 查看系统进程
+		ps : 命令参数
+		常用参数 ：
+			-e : 显示当前所有进程
+			-f : 显示UID，PID，C与STIME栏位信息
+				UID ：拥有修改程序的用户
+				PID ：程序的进程id，进程的唯一标识，在关闭进程时可以使用
+				PPID : 父进程的id
+				C : CPU使用的资源百分比
+				STIME ：系统启动时间
+
+	5)kill -- 关闭进程 
+		语法 ：
+			kill + PID 
+		示例(关闭进程1) ：kill 1
+			
+	6)ping -- 测试网络连通
+		语法 ：
+			ping ip或者域名
+
+		示例 ：
+			ping www.baidu.com
+		
+		查看之后，Ctrl + C，退出查看，回到Linux命令行
+
+	7)curl -- 使用url访问网络的文件传输工具
+		curl是利用URL语法在命令行方式下工作的开源文件传输工具
+		
+		常用来 ：
+			测试网络访问
+			模拟用户访问
+			
+		示例(抓取百度的首页信息) ：
+			curl www.baidu.com
+
+	8)wget -- 下载
+		wget是linux系统上下载资源的工具，比如下载软件的安装包，一般软件都会给出一个下载地址
+
+		语法 ：
+			wget 下载的资源的地址
+			
+	9)echo -- 重定向
+		<1>echo默认的重定向位置为控制台屏幕，即echo "abc"输出abc到控制台
+				
+		<2>使用>符号可以指定重定向的位置，向文件输出内容，文件不存在则新建文件再输出，文件存在则先清空文件，再写入内容(覆盖)
+			例如，echo "abc" > abc.txt
+			
+		<3>如果要追加而不是覆盖，使用>>
+			例如，echo "def" >> abc.txt
+		
+	10)| -- 管道
+		管道就是使用|连接两个命令，以管道左边的输出作为右边的输入
+	
+3、权限管理
+	权限 ：
+		r -- 4 -- 读权限
+		w -- 2 -- 写权限
+		x -- 1 -- 执行权限(指进入目录，访问目录中的文件内容)
+
+		文件的拥有者 -- 创建文件的用户
+		用户所在的组 -- 文件所在的组
+		其他用户 -- 除创建文件的用户外都是其他用户
+		
+		root具有最高的权限
+
+	1)chmod -- 更改权限
+		语法 :
+			chmod 权限 被修改权限的文件名
+		示例 ：
+			chmod 606 aa.txt 
+				将aa.txt文件的权限修改为rw----rw-
+
+	2)chown -- 更改文件的拥有者 
+		示例 ：
+			语法 新的拥有者用户名 被修改的文件名
+		
+		示例 :
+			chown userName aaa.txt
+			
+			
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,337 @@
+######Page07
+1、Linux快捷键
+	Shift + Insert ：粘贴
+	tab ：补全代码
+
+	补充 ：
+		cd / ：进入根目录
+
+2、安装软件命令
+	1)yum
+		Yum(全称 ：Yellow dog Updater, Modified)是一个在RedHat、Fedora以及CentOS中的一种软件包管理器
+	
+		从指定的服务器自动下载软件包并进行安装，可以自动处理软件包之间的依赖性关系，并且一次安装所有依赖的软件包
+		
+		<1>search
+			语法(查找软件包命令) ：
+				yum search 安装包名称中的部分关键字
+				
+			示例 ：
+				yum search java
+
+		<2>install 
+			语法(安装指定的软件命令) ：
+				yum install 安装包名称
+				
+			示例 :
+				yum install java-1.7.0-openjdk
+			
+		<3>remove 
+			语法(删除软件包命令) ：
+				yum remove 安装包名称
+				
+			示例 :
+				yum remove java-1.7.0-openjdk
+				
+		<4>list installed
+			列出所有已安装的软件包命令 ：
+				yum list installed
+			
+		<5>clean all
+			清除已安装软件包的下载文件命令 :
+				yum clean all
+				
+			yum命令下载的安装包都放在/var/cache/yum目录下
+			
+			软件下载完毕后，可以删除软件包，清理内存
+
+3、Linux上搭建服务器环境
+	1)搭建jdk环境步骤
+		<1>将jdk压缩包解压到/usr/local下之后，local下得到jdk-16.0.1
+			usr : 用户的很多应用程序和文件都放在这个目录下，类似于windows下的program files目录
+			
+			在控制台使用java -version命令可以查看jdk的版本，默认是 :
+				openjdk version "1.8.0_265"
+				OpenJDK Runtime Environment (build 1.8.0_265-b01)
+				OpenJDK 64-Bit Server VM (build 25.265-b01, mixed mode)
+				
+				即Linux自带的jdk
+		<2>/etc目录下的profile文件最后加上 ：
+			export JAVA_HOME=/usr/local/jdk1.8.0_291
+			export PATH=$JAVA_HOME/bin:$PATH
+			export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/jre/lib/rt.jar
+
+				etc : 这个目录下存放所有的系统管理所需要的配置文件，环境变量在此处配置
+
+		<3>执行 source /etc/profile 使配置生效
+			source命令通常用于重新执行刚修改的初始化文件，使之立即生效，而不必注销并重新登录
+			
+			语法 ：
+				source 文件名
+				
+		<4>执行java -version检查是否配置成功
+			出现如下字段说明配置成功
+				java version "16.0.1" 2021-04-20
+				Java(TM) SE Runtime Environment (build 16.0.1+9-24)
+				Java HotSpot(TM) 64-Bit Server VM (build 16.0.1+9-24, mixed mode, sharing)
+
+	2)搭建Tomcat环境的步骤
+		<1>将/home/mytest下的Tomcat压缩包解压到/usr/local/下，得到apache-tomcat-9.0.45
+			tar -zxvf apache-tomcat-9.0.45.tar.gz -C /usr/local/
+			
+		<2>启动/关闭 Tomcat
+			Tomcat解压缩之后就可以使用了，用cd命令切换到Tomcat主目录下的bin目录
+			bin目录下中存在两个文件 : startup.sh、shutdown.sh (window环境下是.bat)
+	
+			启动 ：
+				在Tomcat的bin目录下执行 ./startup.sh
+				
+				控制台输出 ：
+					Using CATALINA_BASE:   /usr/local/apache-tomcat-9.0.45
+					Using CATALINA_HOME:   /usr/local/apache-tomcat-9.0.45
+					Using CATALINA_TMPDIR: /usr/local/apache-tomcat-9.0.45/temp
+					Using JRE_HOME:        /usr/local/jdk-16.0.1
+					Using CLASSPATH:       /usr/local/apache-tomcat-9.0.45/bin/bootstrap.jar:/usr/local/apache-tomcat-9.0.45/bin/tomcat-juli.jar
+					Using CATALINA_OPTS:   
+					Tomcat started.
+
+				
+			关闭 ：
+				在Tomcat的bin目录下执行 ./shutdown.sh
+	
+			控制台输出 ：
+				Using CATALINA_BASE:   /usr/local/apache-tomcat-9.0.45
+				Using CATALINA_HOME:   /usr/local/apache-tomcat-9.0.45
+				Using CATALINA_TMPDIR: /usr/local/apache-tomcat-9.0.45/temp
+				Using JRE_HOME:        /usr/local/jdk-16.0.1
+				Using CLASSPATH:       /usr/local/apache-tomcat-9.0.45/bin/bootstrap.jar:/usr/local/apache-tomcat-9.0.45/bin/tomcat-juli.jar
+				Using CATALINA_OPTS:   
+				NOTE: Picked up JDK_JAVA_OPTIONS:  --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+
+	3)搭建MySQL环境的步骤
+		<1>tar -xvf mysql-8.0.24-linux-glibc2.17-x86_64-minimal.tar.xz -C /usr/local/ 
+			解压MySQL压缩包
+			
+		<2>检查系统是否安装了mariadb数据库
+			mariadb数据库是mysql的分支，会和mysql有冲突，如果安装了需要卸载掉
+			
+			检查命令 yum list installed | grep mariadb
+	
+		<3>修改解压后的文件夹的名字(可选)
+			目的是缩短MySQL解压后文件夹的名字
+			
+			mv mysql-8.0.24-linux-glibc2.17-x86_64-minimal mysql-8.0.24
+			
+			mv语法 ：
+				mv 旧的文件夹名字 新的文件夹名字
+	
+		<4>创建数据文件夹data
+			进入到解压后的mysql-8.0.24文件夹，mkdir data
+			data文件夹是MySQL用来存放数据库文件的
+		
+		<5>创建用户
+			创建MySQL的用户，用于执行MySQL的mysqld命令，mysqld命令用于初始化MySQL基础信息
+			
+			创建用户 ：
+				执行 useradd mysql
+					创建名为mysql的用户
+	
+		<6>初始化MySQL
+			使用MySQL的mysqld命令初始化数据库的基本信息
+			
+			切换到mysql-8.0.24/bin下执行命令 :
+				./mysqld --initialize --user=mysql --datadir=/usr/local/mysql-8.0.23/data --basedir=/usr/local/mysql-8.0.23
+				
+			执行结果 ：
+				2021-04-25T07:58:13.870381Z 0 [System] [MY-013169] [Server] /usr/local/mysql-8.0.23/bin/mysqld (mysqld 8.0.23) initializing of server in progress as process 3334
+				2021-04-25T07:58:13.895918Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+				2021-04-25T07:58:14.584673Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+				2021-04-25T07:58:15.573875Z 6 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: I.g:qktYv4+>
+				
+				其中密码是 I.g:qktYv4+>
+
+		<7>启用安全功能
+			启用安全功能指在服务器与客户机之间来回传输的所有数据进行加密
+			
+			通过证书提供身份验证机制，MySQL命令程序的mysql_ssl_rsa_setup提供了开启数据加密功能，生成数字证书
+			
+			在mysql-8.0.24/bin目录下执行命令 ：
+				./mysql_ssl_rsa_setup --datadir=/usr/local/mysql-8.0.23/data
+			
+		<8>更改mysql-8.0.24所属的用户和组为之前创建的mysql用户
+			在mysql-8.0.24的上级位置/usr/local/，执行chown
+			chown -R mysql:mysql /usr/local/mysql-8.0.24/
+			
+			mysql:mysql表示文件夹的所属用户，所属组
+			参数-R表示递归，更改目录中所有子文件夹的权限
+		
+		<9>启动MySQL
+			在mysql-8.0.24/bin目录下执行命令 ：
+				./mysqld_safe&
+				其中&符号表示后台启动
+		
+			mysqld_safe程序会在启动MySQL服务器后继续监控其运行情况，并在其死机时重新启动它
+		
+			确认MySQL是否启动，使用ps -ef | grep mysql查看进程
+			执行结果出现如下信息，说明MySQL启动成功 ：
+				root        3529    2605  0 16:09 pts/0    00:00:00 /bin/sh ./mysqld_safe
+				mysql       3599    3529  1 16:09 pts/0    00:00:00 /usr/local/mysql-8.0.23/bin/mysqld --basedir=/usr/local/mysql-8.0.23 --datadir=/usr/local/mysql-8.0.23/data --plugin-dir=/usr/local/mysql-8.0.23/lib/plugin --user=mysql --log-error=localhost.localdomain.err --pid-file=localhost.localdomain.pid
+
+		<10>使用MySQL客户端进入MySQL
+			在mysql-8.0.23/bin目录下执行命令 ：
+				./mysql -uroot -p
+		
+		<11>修改MySQL密码
+			命令语法 ：
+				alter user '用户名'@'主机域名或ip' identified by '新密码'
+			
+			示例 ：
+				在mysql>下输入 ：alter user 'root'@'localhost' identified by '123456';
+		
+		<12>使用 show databases; 查看数据库检验是否修改密码成功
+			如果没有修改密码则执行后不能查看
+			
+		<13>授权远程访问
+			远程访问是指让其他计算机通过网络访问MySQL
+			没有授权之前只能在本机访问MySQL
+			
+			授权命令 : grant
+			
+			语法 ：
+				grant all privileges on *.* to root@'%';
+				
+			如果出现ERROR 1410 (42000): You are not allowed to create a user with GRANT
+			则退出mysql重新进入，重新执行即可
+		
+		<14>更新权限信息
+			执行flush刷新权限
+			
+			flush privileges;
+			
+		<15>测试MySQL客户端访问MySQL
+			测试前需要关闭Linux防火墙，否则远程连接连不上
+				查看防火墙状态 : systemctl status firewalld
+				让防火墙可用 : systemctl start firewalld
+				让防火墙不可用 ：systemctl stop firewalld
+			
+		
+4、将CRM项目部署到服务器	
+	将.war包至于Tomcat的webapps下
+	重启Tomcat服务器
+	
+	1、问题 ：Window系统下运行Tomcat的start.bat，出现闪退
+		出错原因 ：项目有错误，使用的Maven生成的.war包无效
+		原因 ：之前在src/test/java/的/com/sbr/crm/workbench/test下编写的测试代码没有删除
+		
+		其他解决办法(该出错原因下无效) ：
+			打开startup.bat,在第一行加入
+			SET JAVA_HOME=D:\jdk\jdk1.8.0_121【jdk路径】
+			SET TOMCAT_HOME=D:\apache-tomcat-8.5.29\apache-tomcat-8.5.29【tomcat路径】
+	
+	
+	2、[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:compile (default-compile) on project CRMProject: Compilation failure
+		[ERROR] No compiler is provided in this environment. Perhaps you are running on a JRE rather than a JDK?
+	
+		将jdk和jre都改为1.8
+		
+	
+		<profile>
+      <id>jdk-1.8</id>
+      <activation>
+		<activeByDefault>true</activeByDefault>
+        <jdk>1.8</jdk>
+      </activation>
+      <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
+	  </properties>
+    </profile>
+
+	3、Tomcat运行Maven生成的项目报错Caused by: org.apache.ibatis.binding.BindingException: Invalid bound statement 
+		出错原因 ：Maven管理下的web项目正是依靠taget文件夹下的classes文件，当我们执行xxxMapper.class文件时，由mybatis的规则可以知道，mapper映射文件xxxMapper.xml必须和xxxMapper.java文件在同一个目录，然而当前再classes文件中，只有class文件，而没有xml文件，因此运行class文件的方法时，根本找不到对应的映射语句，这就造成了语句绑定失效
+		解决方法：
+			复制xml映射文件到target的class文件同目录下（这样做非常麻烦，当mapper文件很多的情况下）
+			把xml配置的事由Maven来管理：
+			在该项目的pom.xml文件下，加上：
+			
+				<!-- 如果不添加此节点mybatis的mapper.xml文件都会被漏掉。 -->  
+				<build>  
+					<resources>  
+						<resource>  
+							<directory>src/main/java</directory>  
+							<includes>  
+								<include>**/*.properties</include>  
+								<include>**/*.xml</include>  
+							</includes>  
+							<filtering>false</filtering>  
+						</resource>  
+					</resources>  
+				</build> 
+
+			意思是：Maven扫描java/main/src文件时，要把.properties和.xml文件也扫描上！
+			
+		更新pom.xml之后，在项目上右键，选择Maven项目下的Update功能
+			
+	4、java.lang.IllegalStateException: java.io.FileNotFoundException: D:\Tomcat9\webapps\CRMProject\WEB-INF\lib\jackson-annotations-2.12.2.jar (系统找不到指定的路径。)
+		浏览器访问时，Tomcat找不到war的jar包
+
+		解决办法 ：将war包的名称(或者是war包在Tomcat启动后生成的文件夹的名称)改为项目的名称CRMProject
+			
+		该解决办法同样适用于项目访问出现404，浏览器访问时使用的项目名必须和文件名一致
+		
+	5、webapps里面包含在Eclipse里面运行过的CRMProject项目时，运行Tomcat的startup.bat可以正常启动，仅仅保留新添的war包运行startup.bat会闪退
+		原因 ：Context的配置 -- <Context docBase="D:\Tomcat9\webapps\CRMProject" path="/CRMProject" reloadable="true" source="org.eclipse.jst.jee.server:CRMProject"/></Host>
+		解决办法 ：将/conf/server.xml中的Context标签改为要被访问的项目的Context即可加载该项目
+		
+		Tomcat的context.xml说明、Context标签讲解
+			Context体现在/conf/server.xml中的Host里的<Context>元素，它由Context接口定义。
+			
+			1. 在tomcat 5.5之前
+				一个Host元素中嵌套任意多的Context元素。每个Context的路径必须是惟一的，由path属性定义。另外，你必须定义一个path=“”的context，这个Context称为该虚拟主机的缺省web应用，用来处理那些不能匹配任何Context的Context路径的请求。
+			2、在tomcat 5.5之后
+				1)不推荐在server.xml中进行配置，而是在/conf/context.xml中进行独立的配置。因为 server.xml 是不可动态重加载的资源，服务器一旦启动了以后，要修改这个文件，就得重启服务器才能重新加载。
+				2)而 context.xml 文件则不然， tomcat 服务器会定时去扫描这个文件。一旦发现文件被修改（时间戳改变了），就会自动重新加载这个文件，而不需要重启服务器 。
+				3)其实还可以直接在C:/Tomcat/conf/Catalina/localhost下建立一个xml文件，用于主目录或者虚拟目录，而不需要去修改server.xml就可以达到配置主目录和虚拟目录的目的
+
+	6、项目没有src/main/resources文件夹
+		解决办法 ：
+			选中项目，右键单击，如图所示选择：Build Path --> Configure Build Path
+			在Source下点击Add Floder，选中src/main/resources
+			https://blog.csdn.net/wangwjtt/article/details/84786759
+		
+	7、重新部署.war包后无法访问
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
+	[root@hecs-x-medium-2-linux-20210426110142 bin]# ./mysqld --initialize --user=mysql --datadir=/usr/local/mysql-8.0.23/data --basedir=/usr/local/mysql-8.0.23/
+2021-04-26T09:22:25.130581Z 0 [System] [MY-013169] [Server] /usr/local/mysql-8.0.23/bin/mysqld (mysqld 8.0.23) initializing of server in progress as process 19283
+2021-04-26T09:22:25.152607Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2021-04-26T09:22:26.799973Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2021-04-26T09:22:29.215893Z 6 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: 9%-Y#LYd,M/b
+
+	
+	124.70.181.138
+	
+	
+
+
+<Context docBase="D:\Tomcat9\webapps\CRMProject" path="/CRMProject" reloadable="true" source="org.eclipse.jst.jee.server:CRMProject"/>
+
+
+
+<Context docBase="D:\Tomcat9\webapps\CRMProject" path="/CRMProject" reloadable="true" source="org.eclipse.jst.jee.server:CRMProject"/>
+	<Context docBase="D:\Tomcat9\webapps\Test02" path="/Test02" reloadable="true" source="org.eclipse.jst.jee.server:Test02"/>
+
+108
